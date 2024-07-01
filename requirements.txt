@@ -1,0 +1,9 @@
+numpy==1.26
+pandas
+h5py==3.7.0
+tqdm
+tensorflow==2.11.0
+transformers==4.28.0
+httpx
+fastapi
+uvicorn
