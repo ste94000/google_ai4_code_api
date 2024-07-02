@@ -10,4 +10,6 @@ RUN pip install .
 
 COPY models models
 
-CMD uvicorn google_ai4_code_script.api.fast:app --host 0.0.0.0
+EXPOSE 8080
+
+CMD ["sh", "-c", "uvicorn google_ai4_code_script.api.fast:app --host 0.0.0.0 --port ${PORT:-8080}"]
