@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile
 import json
 from fastapi.responses import FileResponse
+import uvicorn
+import os
 
 app = FastAPI()
 
@@ -21,3 +23,7 @@ def predict(notebook_file: UploadFile):
     notebook_json = json.load(notebook_file.file)
     result = main_codebert(notebook_json=notebook_json)
     return result.to_dict()
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8080))
+    uvicorn.run(app, host='0.0.0.0', port=port)
