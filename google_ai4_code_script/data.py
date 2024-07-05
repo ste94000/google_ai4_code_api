@@ -46,13 +46,13 @@ def get_dataset_distilbert(
 def get_df_codebert(notebook_json):
     #paths = 'input/ipynb/test.ipynb'
     df = convert_notebook(notebook_json)
-    df_result = df.copy()
+    complete_source = df['source'].copy()
     #df = read_notebook(paths).set_index("id", append=True).swaplevel().reset_index()
     df["source"] = df["source"].str.slice(0, MD_MAX_LEN_CODEBERT)
     df["rank"] = df.groupby(["id", "cell_type"]).cumcount()
     df["pct_rank"] = df.groupby(["id", "cell_type"])["rank"].rank(pct=True)
     df.rename(columns={'level_1': 'cell_id'}, inplace=True)
-    return df, df_result
+    return df, complete_source
 
 def clean_code(cell: str) -> str:
     return str(cell).replace("\\n", "\n")

@@ -34,7 +34,7 @@ def main_distilbert(only_markdown: bool = True, ):
 # CODEBERT
 
 def main_codebert(notebook_json):
-    df, df_result = get_df_codebert(notebook_json)
+    df, complete_source = get_df_codebert(notebook_json)
 
     fts = get_features(df)
     input_ids, attention_mask, features = tokenize_codebert(df, fts)
@@ -49,10 +49,11 @@ def main_codebert(notebook_json):
     model.load_weights(WEIGHTS_PATH_CODEBERT)
 
     pred = model.predict(dataset)
-    df_result['rank_pred'] = pred
-    df_result.sort_values('rank_pred', inplace=True)
+    df['rank_pred'] = pred
+    df['source'] = complete_source
+    df.sort_values('rank_pred', inplace=True)
 
-    return df_result[['cell_id', 'cell_type', 'source', 'rank_pred']].reset_index(drop=True)
+    return df[['cell_id', 'cell_type', 'source', 'rank_pred']].reset_index(drop=True)
 
 if __name__ == '__main__':
     print(main_codebert())
